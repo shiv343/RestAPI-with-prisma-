@@ -29,3 +29,23 @@ exports.createProduct = async (req, res ) => {
         return res.status(500).json({error:error.message})
     }
 }
+
+exports.getProducts = async( req , res,) => {
+    try {
+         const  products = await prisma.product.findMany({
+            include: { 
+                category: {
+                    select:{
+                        id: true,
+                        name: true,
+                    }
+                }
+
+            }
+    })
+
+         return res.status(200).json(products)
+    } catch (error){
+          return res.status(500).json({error:error.message})
+    }
+}
